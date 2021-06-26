@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Start</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
@@ -39,6 +40,11 @@ body{
     justify-content: center;
     color: white;
     font-size: 40px;
+}
+
+#text{
+	line-height: 2em;
+	text-align: center;
 }
 
 #done {
@@ -102,14 +108,16 @@ document.getElementById("shape").addEventListener("click", changeShape);
 function changeShape() {
 	console.log(shape);	
 	if (shape == 1){
-		document.getElementById("shape").style.cssText = "width:350px;transition:all 2s;"
+		document.getElementById("shape").style.cssText = "width:90vw;transition:all 2s;"
+		document.getElementById("text").innerHTML = "input"
 	}
 	if (shape == 2){
-		document.getElementById("shape").style.cssText = "width:350px;height:350px;border-radius:50%;transition:all 2s;"
+		document.getElementById("shape").style.cssText = "width:90vw;height:90vw;border-radius:50%;transition:all 2s;"
 				document.getElementById("fail").style.cssText = "transform:scale(1);transition:all 2s;"
 		document.getElementById("done").style.cssText = "transform:scale(1);transition:all 2s;"
+		start();
 	}
-	if (shape < 2){
+	if (shape < 3){
 	shape++;
 	}
 }
@@ -125,6 +133,8 @@ function done() {
 		document.getElementById("fail").style.cssText = "transform:scale(0);transition:all 2s;"
 		document.getElementById("done").style.cssText = "transform:scale(0);transition:all 2s;"
 		document.getElementById("again").style.cssText = "transform:scale(1);transition:all 2s;background-color:white;"
+		document.getElementById("text").innerHTML = "Completed" + "</br>" + timeToString(elapsedTime)
+		pause();
 
 }
 // End Completed
@@ -139,7 +149,9 @@ function fail() {
 		document.getElementById("shape").style.cssText = "width:100vw;height:100vh;border-radius:0%;transition:all 2s;background-color:black;"
 		document.getElementById("fail").style.cssText = "transform:scale(0);transition:all 2s;"
 		document.getElementById("done").style.cssText = "transform:scale(0);transition:all 2s;"
-		document.getElementById("again").style.cssText = "transform:scale(1);transition:all 2s; background-color:#22B857;"
+		document.getElementById("again").style.cssText = "transform:scale(1);transition:all 2s; background-color:white;color:black;"
+		document.getElementById("text").innerHTML = "Failed" + "</br>" + timeToString(elapsedTime)
+		pause();
 }
 // Failed Completed
 // -----------------------------
@@ -153,9 +165,76 @@ function again() {
 	shape=1;
 		document.getElementById("shape").style.cssText = "width: 200px;height: 80px;border-radius:0%;transition:all 2s;background-color:#22B857;"
 		document.getElementById("again").style.cssText = "transform:scale(0);transition:all 2s;"
+		reset();
+		document.getElementById("text").innerHTML = "Start"
 }
 // Again Completed
 // -----------------------------
+
+
+
+// Timer
+// -----------------------------
+
+function timeToString(time) {
+  let diffInHrs = time / 3600000;
+  let hh = Math.floor(diffInHrs);
+
+  let diffInMin = (diffInHrs - hh) * 60;
+  let mm = Math.floor(diffInMin);
+
+  let diffInSec = (diffInMin - mm) * 60;
+  let ss = Math.floor(diffInSec);
+
+  let diffInMs = (diffInSec - ss) * 100;
+  let ms = Math.floor(diffInMs);
+
+  let formattedMM = mm.toString().padStart(2, "0");
+  let formattedSS = ss.toString().padStart(2, "0");
+  let formattedMS = ms.toString().padStart(2, "0");
+
+  return `${formattedMM}:${formattedSS}:${formattedMS}`;
+}
+
+// Declare variables to use in our functions below
+
+let startTime;
+let elapsedTime = 0;
+let timerInterval;
+
+// Create function to modify innerHTML
+
+function print(txt) {
+  document.getElementById("text").innerHTML = txt;
+}
+
+// Create "start", "pause" and "reset" functions
+
+function start() {
+  startTime = Date.now() - elapsedTime;
+  timerInterval = setInterval(function printTime() {
+    elapsedTime = Date.now() - startTime;
+    print(timeToString(elapsedTime));
+  }, 10);
+
+}
+
+function pause() {
+  clearInterval(timerInterval);
+
+}
+
+function reset() {
+  clearInterval(timerInterval);
+  // print("00:00:00");
+  // elapsedTime = 0;
+
+}
+
+
+// End Timer
+// -----------------------------
+
 
 
 </script>
