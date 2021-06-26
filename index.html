@@ -10,6 +10,7 @@
 <div id="shape">
 	<p id="text">Start</p>
 </div>
+<p id="header">header</p>
 <div id="done">
 	<p>Done</p>
 </div>
@@ -27,6 +28,13 @@ body{
 	font-family: Open Sans; 
 }
 	
+#header {
+    text-align: center;
+    color: #22B857;
+    font-size: 30px;
+    transform:scale(0);
+}
+
 #shape {
     width: 200px;
     height: 80px;
@@ -45,6 +53,7 @@ body{
 #text{
 	line-height: 2em;
 	text-align: center;
+	    background-color: #22B857;
 }
 
 #done {
@@ -106,21 +115,30 @@ var shape = 1;
 document.getElementById("shape").addEventListener("click", changeShape);
 
 function changeShape() {
-	console.log(shape);	
 	if (shape == 1){
 		document.getElementById("shape").style.cssText = "width:90vw;transition:all 2s;"
-		document.getElementById("text").innerHTML = "input"
+		document.getElementById("text").innerHTML = "Type your task"
+		document.getElementById("text").contentEditable = "true";
+		document.getElementById("text").style.cssText = "background-color:#22b857;"
 	}
 	if (shape == 2){
+		document.getElementById("text").contentEditable = "false";
 		document.getElementById("shape").style.cssText = "width:90vw;height:90vw;border-radius:50%;transition:all 2s;"
 				document.getElementById("fail").style.cssText = "transform:scale(1);transition:all 2s;"
 		document.getElementById("done").style.cssText = "transform:scale(1);transition:all 2s;"
+		document.getElementById("header").style.cssText = "transform:scale(1);transition:all 2s;color:#22B857;"
 		start();
 	}
-	if (shape < 3){
-	shape++;
-	}
 }
+document.getElementById('text').addEventListener('keypress', (evt) => {
+    if (evt.which === 13) {
+    	document.getElementById('header').innerHTML= document.getElementById('text').innerHTML;
+        evt.preventDefault();
+        shape= 2;
+        changeShape();
+        document.getElementById("text").style.cssText = "background-color:unset;"
+    }
+});
 // End change shape
 // -----------------------------
 
@@ -134,6 +152,7 @@ function done() {
 		document.getElementById("done").style.cssText = "transform:scale(0);transition:all 2s;"
 		document.getElementById("again").style.cssText = "transform:scale(1);transition:all 2s;background-color:white;"
 		document.getElementById("text").innerHTML = "Completed" + "</br>" + timeToString(elapsedTime)
+				document.getElementById("header").style.cssText = "transform:scale(0);transition:all 2s;color:white;"
 		pause();
 
 }
@@ -151,6 +170,7 @@ function fail() {
 		document.getElementById("done").style.cssText = "transform:scale(0);transition:all 2s;"
 		document.getElementById("again").style.cssText = "transform:scale(1);transition:all 2s; background-color:white;color:black;"
 		document.getElementById("text").innerHTML = "Failed" + "</br>" + timeToString(elapsedTime)
+				document.getElementById("header").style.cssText = "transform:scale(0);transition:all 2s;color:white;"
 		pause();
 }
 // Failed Completed
@@ -211,6 +231,7 @@ function print(txt) {
 // Create "start", "pause" and "reset" functions
 
 function start() {
+	elapsedTime = 0;
   startTime = Date.now() - elapsedTime;
   timerInterval = setInterval(function printTime() {
     elapsedTime = Date.now() - startTime;
