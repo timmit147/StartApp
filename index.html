@@ -54,6 +54,7 @@ body{
 	line-height: 2em;
 	text-align: center;
 	    background-color: #22B857;
+	    width: 100%;
 }
 
 #done {
@@ -117,9 +118,11 @@ document.getElementById("shape").addEventListener("click", changeShape);
 function changeShape() {
 	if (shape == 1){
 		document.getElementById("shape").style.cssText = "width:90vw;transition:all 2s;"
-		document.getElementById("text").innerHTML = "Type your task"
+		document.getElementById("text").innerHTML = ""
 		document.getElementById("text").contentEditable = "true";
 		document.getElementById("text").style.cssText = "background-color:#22b857;"
+		document.getElementById("text").focus();
+
 	}
 	if (shape == 2){
 		document.getElementById("text").contentEditable = "false";
@@ -139,6 +142,18 @@ document.getElementById('text').addEventListener('keydown', (evt) => {
         document.getElementById("text").style.cssText = "background-color:unset;"
     }
 });
+
+with (document.getElementById('text')) {
+        onblur = function(e) {
+            var elm = e.target;
+            setTimeout(function(){elm.focus()});
+        }
+        onkeydown = function(e) {
+            var key = e.which || e.keyCode;
+            if (key == 9) e.preventDefault();
+            // code for tab is 9
+        }
+    }
 // End change shape
 // -----------------------------
 
@@ -152,7 +167,7 @@ function done() {
 		document.getElementById("done").style.cssText = "transform:scale(0);transition:all 2s;"
 		document.getElementById("again").style.cssText = "transform:scale(1);transition:all 2s;background-color:white;"
 		document.getElementById("text").innerHTML = "Completed" + "</br>" + timeToString(elapsedTime)
-				document.getElementById("header").style.cssText = "transform:scale(0);transition:all 2s;color:white;"
+				document.getElementById("header").style.cssText = "transform:scale(1);transition:all 2s;color:white;"
 		pause();
 
 }
@@ -170,7 +185,7 @@ function fail() {
 		document.getElementById("done").style.cssText = "transform:scale(0);transition:all 2s;"
 		document.getElementById("again").style.cssText = "transform:scale(1);transition:all 2s; background-color:white;color:black;"
 		document.getElementById("text").innerHTML = "Failed" + "</br>" + timeToString(elapsedTime)
-				document.getElementById("header").style.cssText = "transform:scale(0);transition:all 2s;color:white;"
+				document.getElementById("header").style.cssText = "transform:scale(1);transition:all 2s;color:white;"
 		pause();
 }
 // Failed Completed
@@ -187,6 +202,7 @@ function again() {
 		document.getElementById("again").style.cssText = "transform:scale(0);transition:all 2s;"
 		reset();
 		document.getElementById("text").innerHTML = "Start"
+		document.getElementById("header").style.cssText = "transform:scale(0);transition:all 2s;"
 }
 // Again Completed
 // -----------------------------
