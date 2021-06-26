@@ -130,7 +130,7 @@ function changeShape() {
 		start();
 	}
 }
-document.getElementById('text').addEventListener('keypress', (evt) => {
+document.getElementById('text').addEventListener('keydown', (evt) => {
     if (evt.which === 13) {
     	document.getElementById('header').innerHTML= document.getElementById('text').innerHTML;
         evt.preventDefault();
